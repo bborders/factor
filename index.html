@@ -1,8 +1,43 @@
 <html>
 <head>
-<title>Ben's Factors App</title>
-<body>
-Hello World!
-</body>
+<title>Ben's Factors Appt</title>
+<script language="javascript">
+function clear() {
+  var form = document.forms["app"]
+  var outbox = form["outbox"]
+  outbox.value = ""
+}
+function append(t) {
+  var form = document.forms["app"]
+  var outbox = form["outbox"]
+  outbox.value += t + "\n"
+}
+function factor(n) {
+  for (var i=1; i < n + 1; i++) {
+    if (n % i == 0) {
+      append(i)
+    }
+  }
+}
+function runApp() {
+  clear()
+  var form = document.forms["app"]
+  var inbox = form["inbox"]
+  var n = inbox.value
+  factor(n)
+}
+</script>
 </head>
+<body>
+<h1>factors GO!</h1>
+<form name="app" onsubmit="runApp(); return false">
+<div>
+Inbox <input type="text" name="inbox" style="text-align: right" />
+<input type="submit" value="GO!">
+</div>
+<div style="padding:20">
+Outbox <textarea name="outbox" rows="20" style="text-align: right"></textarea>
+</div>
+</form>
+</body>
 </html>
