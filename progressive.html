@@ -1,0 +1,86 @@
+<html>
+<head>
+<title>Ben's Factors App</title>
+<script language="javascript">
+function clear() {
+  var form = document.forms["app"]
+  var progress = form["progress"]
+  var timer = form["timer"]
+  var outbox = form["outbox"]
+
+  progress.value = ""
+  timer.value = ""
+  outbox.value = ""
+}
+function append(t) {
+  var form = document.forms["app"]
+  var outbox = form["outbox"]
+  outbox.value += t + "\n"
+}
+function factor(n) {
+  var start = new Date()
+  var form = document.forms["app"]
+  var inbox = form["inbox"]
+  var progress = form["progress"]
+  var timer = form["timer"]
+  var go = form["go"]
+
+  var x = 100000
+  var c = Math.ceil(n / x)
+
+  progress.value = 0
+  go.enabled = false
+
+  for (var i = 0; i < c; i++) {
+    (function(j) {
+      setTimeout(function() {    
+        var d = j * x + 1
+        var e = (j + 1) * x + 1
+        var k;
+        for (k=d; (k < e) && (k < n + 1); k++) {
+          if (n % k == 0) {
+            append(k)
+          }
+        }
+        progress.value = k - 1
+        var end = new Date()
+        timer.value = end.getTime() - start.getTime()
+      })
+    })(i)
+  }
+  setTimeout(function() {
+    var end = new Date()
+    timer.value = end.getTime() - start.getTime()
+    inbox.enabled = true
+    go.enabled = true
+  })
+}
+function runApp() {
+  clear()
+  var form = document.forms["app"]
+  var inbox = form["inbox"]
+  inbox.enabled = false
+  var n = parseInt(inbox.value)
+  factor(n)
+}
+</script>
+</head>
+<body>
+<h1>factors GO!</h1>
+<form name="app" onsubmit="runApp(); return false">
+<div>
+Inbox <input type="text" name="inbox" style="text-align: right">
+<input name="go" type="submit" value="GO!">
+</div>
+<div>
+Progress <input disabled="true" type="text" name="progress" style="text-align: right">
+</div>
+<div>
+Timer <input disabled="true" type="text" name="timer" style="text-align: right; font-family: monospace;">
+</div>
+<div style="padding:20">
+Outbox <textarea name="outbox" rows="20" style="text-align: right; font-family: monospace;"></textarea>
+</div>
+</form>
+</body>
+</html>
